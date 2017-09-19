@@ -7,6 +7,9 @@ set number
 set colorcolumn=81
 highlight ColorColumn ctermbg=Black ctermfg=DarkRed
 
+set listchars=tab:\|\ 
+set list
+
 set noexpandtab
 set shiftwidth=2
 set tabstop=2
