@@ -29,6 +29,9 @@ nmap ga <Plug>(EasyAlign)
 " Better Whitespace
 Plug 'ntpeters/vim-better-whitespace'
 
+" Surround
+Plug 'tpope/vim-surround'
+
 call plug#end()
 
 "SCOPE settings for vim
