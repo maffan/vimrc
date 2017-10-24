@@ -32,6 +32,9 @@ Plug 'ntpeters/vim-better-whitespace'
 " Surround
 Plug 'tpope/vim-surround'
 
+" Scratch
+Plug 'mtth/scratch.vim'
+
 call plug#end()
 
 "SCOPE settings for vim
