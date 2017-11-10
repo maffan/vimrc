@@ -14,6 +14,8 @@ set noexpandtab
 set shiftwidth=2
 set tabstop=2
 
+set nofixendofline
+
 " Plugins
 
 call plug#begin('~/.vim/plugged')
