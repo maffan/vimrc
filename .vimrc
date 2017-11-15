@@ -4,7 +4,7 @@ colorscheme evening
 set encoding=utf-8
 set number
 
-set colorcolumn=81
+set colorcolumn=101
 highlight ColorColumn ctermbg=Black ctermfg=DarkRed
 
 set listchars=tab:\|\ 
