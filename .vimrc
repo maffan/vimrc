@@ -16,6 +16,10 @@ set tabstop=2
 
 set nofixendofline
 
+if has('gui_running')
+	set guifont=Inconsolata\ Medium\ 12
+endif
+
 " Plugins
 
 call plug#begin('~/.vim/plugged')
