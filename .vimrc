@@ -1,11 +1,7 @@
 syntax enable
-set background=dark
 colorscheme evening
 set encoding=utf-8
 set number
-
-set colorcolumn=101
-highlight ColorColumn ctermbg=Black ctermfg=DarkRed
 
 set listchars=tab:\|\ 
 set list
@@ -14,10 +10,14 @@ set noexpandtab
 set shiftwidth=2
 set tabstop=2
 
-set nofixendofline
+set noeol
+
+highlight OverLength term=reverse ctermbg=1 guibg=DarkRed
+3match OverLength /\%81v.\+/
 
 if has('gui_running')
 	set guifont=Inconsolata\ Medium\ 12
+	set columns=104
 endif
 
 " Plugins
