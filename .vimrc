@@ -13,7 +13,7 @@ set tabstop=2
 set noeol
 
 highlight OverLength term=reverse ctermbg=1 guibg=DarkRed
-3match OverLength /\%81v.\+/
+2match OverLength /\%81v.\+/
 
 if has('gui_running')
 	set guifont=Inconsolata\ Medium\ 12
