@@ -41,6 +41,9 @@ Plug 'tpope/vim-surround'
 " Scratch
 Plug 'mtth/scratch.vim'
 
+" fugitive.vim
+Plug 'tpope/vim-fugitive'
+
 call plug#end()
 
 "SCOPE settings for vim
