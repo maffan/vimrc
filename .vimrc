@@ -44,7 +44,14 @@ Plug 'mtth/scratch.vim'
 " fugitive.vim
 Plug 'tpope/vim-fugitive'
 
+" Color Schemes
+Plug 'rafi/awesome-vim-colorschemes'
+
 call plug#end()
+
+colo gruvbox
+set background=dark
+
 
 "SCOPE settings for vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
