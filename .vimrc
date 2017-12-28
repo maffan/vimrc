@@ -6,10 +6,6 @@ set number
 set listchars=tab:\|\ 
 set list
 
-set noexpandtab
-set shiftwidth=2
-set tabstop=2
-
 set noeol
 
 highlight OverLength term=reverse ctermbg=1 guibg=DarkRed
@@ -37,6 +33,9 @@ Plug 'ntpeters/vim-better-whitespace'
 
 " Surround
 Plug 'tpope/vim-surround'
+
+" Autodetect indentaion
+Plug 'tpope/vim-sleuth'
 
 " Scratch
 Plug 'mtth/scratch.vim'
