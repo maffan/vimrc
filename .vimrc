@@ -46,6 +46,9 @@ Plug 'tpope/vim-fugitive'
 " Color Schemes
 Plug 'rafi/awesome-vim-colorschemes'
 
+" Doxygen support
+Plug 'vim-scripts/DoxygenToolkit.vim'
+
 call plug#end()
 
 colo gruvbox
@@ -214,6 +217,12 @@ if has("cscope")
     "set ttimeoutlen=100
 
 endif
+
+" Doxygen settings
+let g:DoxygenToolkit_briefTag_pre="@brief  "
+let g:DoxygenToolkit_paramTag_pre="@param "
+let g:DoxygenToolkit_returnTag="@returns   "
+let g:DoxygenToolkit_authorName="Marcus Flyckt"
 
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
