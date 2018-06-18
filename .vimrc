@@ -16,6 +16,10 @@ if has('gui_running')
 	set columns=104
 endif
 
+" Tab completions
+set wildmode=longest,list,full
+set wildmenu
+
 " Plugins
 
 call plug#begin('~/.vim/plugged')
