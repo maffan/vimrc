@@ -191,6 +191,10 @@ if has("cscope")
     nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
     nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
+    " (Re)generate cscope
+    command CscopeRegen execute '!cscope -Rb' | cs reset
+    nmap <C-\>r :CscopeRegen<CR>
+
 
     """"""""""""" key map timeouts
     "
