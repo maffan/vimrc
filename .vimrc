@@ -53,6 +53,11 @@ Plug 'rafi/awesome-vim-colorschemes'
 " Doxygen support
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
+" Switch between header/implementation
+Plug 'ericcurtin/CurtineIncSw.vim'
+
+map <F5> :call CurtineIncSw()<CR>
+
 call plug#end()
 
 colo gruvbox
