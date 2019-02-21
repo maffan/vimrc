@@ -8,6 +8,9 @@ set list
 
 set noeol
 
+" Always show status bar
+set laststatus=2
+
 highlight OverLength term=reverse ctermbg=1 guibg=DarkRed
 2match OverLength /\%81v.\+/
 
@@ -55,6 +58,9 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 
 " Switch between header/implementation
 Plug 'ericcurtin/CurtineIncSw.vim'
+
+" Find files
+Plug 'kien/ctrlp.vim'
 
 map <F5> :call CurtineIncSw()<CR>
 
