@@ -60,7 +60,7 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'ericcurtin/CurtineIncSw.vim'
 
 " Find files
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 map <F5> :call CurtineIncSw()<CR>
 
@@ -247,3 +247,5 @@ nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
+
+echom ">^.^<"
