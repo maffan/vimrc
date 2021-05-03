@@ -1,251 +1,185 @@
-syntax enable
-colorscheme evening
-set encoding=utf-8
-set number
-
-set listchars=tab:\|\ 
-set list
-
-set noeol
-
-" Always show status bar
-set laststatus=2
-
-highlight OverLength term=reverse ctermbg=1 guibg=DarkRed
-2match OverLength /\%81v.\+/
-
-if has('gui_running')
-	set guifont=Inconsolata\ Medium\ 12
-	set columns=104
+" Plugin stuff {{{
+" vim-plug {{{
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Tab completions
-set wildmode=longest,list,full
-set wildmenu
-
-" Plugins
-
-call plug#begin('~/.vim/plugged')
-
-" Easy Align
+call plug#begin()
+Plug 'dense-analysis/ale'
+Plug 'tpope/vim-commentary'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ryanoasis/vim-devicons'
 Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-flagship'
+Plug 'morhetz/gruvbox'
+Plug 'embear/vim-localvimrc'
+Plug 'preservim/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'mtth/scratch.vim'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-surround'
+Plug 'yegappan/taglist'
+call plug#end()
+" vim-plug }}}
+
+" Taglist
+nnoremap <leader>tl :TlistToggle<CR>
+let g:Glist_Show_One_File=1
+
+" commentary
+augroup c_comment
+    autocmd!
+    autocmd FileType c setlocal commentstring=//%s
+augroup END
+
+" flagship
+set laststatus=2
+set showtabline=2
+set guioptions-=e
+
+" localvimrc
+let g:localvimrc_sandbox = 0
+let g:localvimrc_ask = 0
+
+" CtrlP
+let g:ctrlp_clear_cache_on_exit = 1
+let g:ctrlp_working_path_mode = "ra"
+
+" NERDtree
+noremap <F2> :NERDTreeToggle<CR>
+nnoremap <Leader>nt :NERDTreeToggle<CR>
+nnoremap <Leader>nf :NERDTreeFocus<CR>
+nnoremap <Leader>nb :NERDTreeFind<CR>
+" Exit Vim if NERDTree is the only window left.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    \ quit | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
+" Colorscheme
+let g:gruvbox_italic=1
+set termguicolors
+set background=dark
+colorscheme gruvbox
+
+" pandoc
+let g:pandoc#modules#disabled = ["folding"]
+
+" cscope
+set cscopetag
+if filereadable("cscope.out")
+  set nocscopeverbose
+  set csto=0
+  cs add cscope.out
+  set cscopeverbose
+endif
+
+" Terminal
+tnoremap <C-[> <C-\><C-n>
+tnoremap <Leader>sm <C-\><C-n>mSa
+tnoremap <Leader>gm <C-\><C-n>`S
+
+" Easy align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 
-" " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" Better Whitespace
-Plug 'ntpeters/vim-better-whitespace'
+" Plugin stuff }}}
 
-" Surround
-Plug 'tpope/vim-surround'
+" Standard stuff
+set belloff=all
+set mouse=a
+set tabstop=4
+set shiftwidth=4
+set encoding=UTF-8
+set ignorecase
+set smartcase
+set wildmode=longest,list,full
 
-" Autodetect indentaion
-Plug 'tpope/vim-sleuth'
+set list
+set number
 
-" Scratch
-Plug 'mtth/scratch.vim'
+" Functions
+function! TemplateReplace()
+    " Replace '-' and '_' with spaces
+    let l:title = tr(tr(expand('%:r'), '-', ' '), '_', ' ')
+    " Make title case
+    let l:title = substitute(l:title, '\<\(\w\)\(\w*\)\>', '\u\1\L\2', 'g')
+    let l:date = strftime('%B, %e %Y')
+    exec "%s/{{date}}/" . l:date . "/ge"
+    exec "%s/{{title}}/" . l:title . "/ge"
+    normal! G
+endfun
 
-" fugitive.vim
-Plug 'tpope/vim-fugitive'
+function! MD2PDF()
+  let l:mdfile = expand("%")
+  let l:pdffile = expand("%:r") . ".pdf"
+  execute '!pandoc ' . l:mdfile . ' -o ' . l:pdffile . ' && zathura ' . l:pdffile
+endfunction
 
-" Color Schemes
-Plug 'rafi/awesome-vim-colorschemes'
+" Abbrevs
+iabbrev @@ marcus.flyckt@gmail.com
+iabbrev ssig --<cr>Marcus Flyckt<cr>marcus.flyckt@gmail.com
 
-" Doxygen support
-Plug 'vim-scripts/DoxygenToolkit.vim'
+" Mappings
+nnoremap - ddp
+nnoremap _ kddpk
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>elv :LocalVimRCEdit<cr>
+nnoremap <leader>slv :LocalVimRC<cr>
+nnoremap <up> <nop>
+nnoremap <right> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <leader>sq :mksession!<cr>:wqa<cr>
+nnoremap <leader>frn vi{:s/<c-r>f/<c-r>t/gc<cr>
+nnoremap Y yiw
+nnoremap <leader>rw viw"tp
+nnoremap <leader>c ^C
+nnoremap <leader>id "=strftime('%B, %e %Y')<cr>p
 
-" Switch between header/implementation
-Plug 'ericcurtin/CurtineIncSw.vim'
+inoremap <leader><c-d> <esc>ddi
+inoremap <leader><c-u> <esc>viwUA
+inoremap jk <esc>
+inoremap <leader>c <esc>^C
 
-" Find files
-Plug 'ctrlpvim/ctrlp.vim'
-
-map <F5> :call CurtineIncSw()<CR>
-
-call plug#end()
-
-colo gruvbox
-set background=dark
-
-
-"SCOPE settings for vim
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
-" This file contains some boilerplate settings for vim's cscope interface,
-" plus some keyboard mappings that I've found useful.
-"
-" USAGE: 
-" -- vim 6:     Stick this file in your ~/.vim/plugin directory (or in a
-"               'plugin' directory in some other directory that is in your
-"               'runtimepath'.
-"
-" -- vim 5:     Stick this file somewhere and 'source cscope.vim' it from
-"               your ~/.vimrc file (or cut and paste it into your .vimrc).
-"
-" NOTE: 
-" These key maps use multiple keystrokes (2 or 3 keys).  If you find that vim
-" keeps timing you out before you can complete them, try changing your timeout
-" settings, as explained below.
-"
-" Happy cscoping,
-"
-" Jason Duell       jduell@alumni.princeton.edu     2002/3/7
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-" This tests to see if vim was configured with the '--enable-cscope' option
-" when it was compiled.  If it wasn't, time to recompile vim... 
-if has("cscope")
-
-    """"""""""""" Standard cscope/vim boilerplate
-
-    " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
-    set cscopetag
-
-    " check cscope for definition of a symbol before checking ctags: set to 1
-    " if you want the reverse search order.
-    set csto=0
-
-    " add any cscope database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out  
-    " else add the database pointed to by environment variable 
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-
-    " show msg when any other cscope db added
-    set cscopeverbose  
+vnoremap <leader>rn :s/<c-r>f/<c-r>t/gc<cr>
 
 
-    """"""""""""" My cscope/vim key mappings
-    "
-    " The following maps all invoke one of the following cscope search types:
-    "
-    "   's'   symbol: find all references to the token under cursor
-    "   'g'   global: find global definition(s) of the token under cursor
-    "   'c'   calls:  find all calls to the function name under cursor
-    "   't'   text:   find all instances of the text under cursor
-    "   'e'   egrep:  egrep search for the word under cursor
-    "   'f'   file:   open the filename under cursor
-    "   'i'   includes: find files that include the filename under cursor
-    "   'd'   called: find functions that function under cursor calls
-    "
-    " Below are three sets of the maps: one set that just jumps to your
-    " search result, one that splits the existing vim window horizontally and
-    " diplays your search result in the new window, and one that does the same
-    " thing, but does a vertical split instead (vim 6 only).
-    "
-    " I've used CTRL-\ and CTRL-@ as the starting keys for these maps, as it's
-    " unlikely that you need their default mappings (CTRL-\'s default use is
-    " as part of CTRL-\ CTRL-N typemap, which basically just does the same
-    " thing as hitting 'escape': CTRL-@ doesn't seem to have any default use).
-    " If you don't like using 'CTRL-@' or CTRL-\, , you can change some or all
-    " of these maps to use other keys.  One likely candidate is 'CTRL-_'
-    " (which also maps to CTRL-/, which is easier to type).  By default it is
-    " used to switch between Hebrew and English keyboard mode.
-    "
-    " All of the maps involving the <cfile> macro use '^<cfile>$': this is so
-    " that searches over '#include <time.h>" return only references to
-    " 'time.h', and not 'sys/time.h', etc. (by default cscope will return all
-    " files that contain 'time.h' as part of their name).
+" Commands
+" Plugsort: Sorts vim-plug rows
+command! -range Plugsort <line1>,<line2>sort /.*\/\(vim-\)\=/
+
+" Autocommands
+augroup templates
+    autocmd!
+  autocmd BufNewFile *.md 0r ~/.vim/templates/skeleton.md | call TemplateReplace()
+augroup END
+
+augroup filetype_vim
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
+augroup END
+
+augroup nowrap_group
+  autocmd!
+  autocmd FileType html,xml setlocal nowrap
+augroup END
+
+augroup filetype_c
+  autocmd!
+  autocmd FileType c :iabbrev <buffer> mmain int main(int argc, char *argv[])<cr>{<cr>}<up>
+augroup END
+
+" ctags
+set tags=./tags,tags
 
 
-    " To do the first type of search, hit 'CTRL-\', followed by one of the
-    " cscope search types above (s,g,c,t,e,f,i,d).  The result of your cscope
-    " search will be displayed in the current window.  You can use CTRL-T to
-    " go back to where you were before the search.  
-    "
-
-    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>	
-
-
-    " Using 'CTRL-spacebar' (intepreted as CTRL-@ by vim) then a search type
-    " makes the vim window split horizontally, with search result displayed in
-    " the new window.
-    "
-    " (Note: earlier versions of vim may not have the :scs command, but it
-    " can be simulated roughly via:
-    "    nmap <C-@>s <C-W><C-S> :cs find s <C-R>=expand("<cword>")<CR><CR>	
-
-    nmap <C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR>	
-    nmap <C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
-    nmap <C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR>	
-
-
-    " Hitting CTRL-space *twice* before the search type does a vertical 
-    " split instead of a horizontal one (vim 6 and up only)
-    "
-    " (Note: you may wish to put a 'set splitright' in your .vimrc
-    " if you prefer the new window on the right instead of the left
-
-    nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>	
-    nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>	
-    nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
-
-    " (Re)generate cscope
-    command CscopeRegen execute '!cscope -Rb' | cs reset
-    nmap <C-\>r :CscopeRegen<CR>
-
-
-    """"""""""""" key map timeouts
-    "
-    " By default Vim will only wait 1 second for each keystroke in a mapping.
-    " You may find that too short with the above typemaps.  If so, you should
-    " either turn off mapping timeouts via 'notimeout'.
-    "
-    "set notimeout 
-    "
-    " Or, you can keep timeouts, by uncommenting the timeoutlen line below,
-    " with your own personal favorite value (in milliseconds):
-    "
-    "set timeoutlen=4000
-    "
-    " Either way, since mapping timeout settings by default also set the
-    " timeouts for multicharacter 'keys codes' (like <F1>), you should also
-    " set ttimeout and ttimeoutlen: otherwise, you will experience strange
-    " delays as vim waits for a keystroke after you hit ESC (it will be
-    " waiting to see if the ESC is actually part of a key code like <F1>).
-    "
-    "set ttimeout 
-    "
-    " personally, I find a tenth of a second to work well for key code
-    " timeouts. If you experience problems and have a slow terminal or network
-    " connection, set it higher.  If you don't set ttimeoutlen, the value for
-    " timeoutlent (default: 1000 = 1 second, which is sluggish) is used.
-    "
-    "set ttimeoutlen=100
-
-endif
-
-" Doxygen settings
-let g:DoxygenToolkit_briefTag_pre="@brief  "
-let g:DoxygenToolkit_paramTag_pre="@param "
-let g:DoxygenToolkit_returnTag="@returns   "
-let g:DoxygenToolkit_authorName="Marcus Flyckt"
-
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :bfirst<CR>
-nnoremap <silent> ]B :blast<CR>
-
-echom ">^.^<"
