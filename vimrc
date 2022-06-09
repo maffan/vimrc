@@ -375,18 +375,3 @@ augroup END
 
 " autocommands }}}
 
-" Aros specific {{{
-if isdirectory('Sw/A_Xmc')
-    function! ArosMakeArgs(A,L,P)
-        return "all\nclean\nrebuild\nheaders\nhelp"
-    endfun
-    function! ArosCompile(target)
-        execute '!cd Sw/A_Xmc' . '& make.bat ' . a:target
-    endfun
-    function! ArosStartDaVinci()
-        execut 'silent !cd Sw/A_Xmc & start_DaVinci.bat'
-    endfun
-    command! -nargs=? -complete=custom,ArosMakeArgs Amake call ArosCompile(<f-args>)
-    command! -nargs=0 ADV call ArosStartDaVinci()
-endif
-" Aros }}}
