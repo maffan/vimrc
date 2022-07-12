@@ -237,7 +237,6 @@ set laststatus=2
 " to the same file
 " First look for 'tags' file in current directory,
 set tags=./tags,tags
-
 " Column
 set colorcolumn=80
 
@@ -267,6 +266,8 @@ set statusline+="(%l,%c%V%)"
 set statusline+=\
 " Percentage of file displayed
 set statusline+=%P
+
+set statusline^=%{coc#status()}
 
 " Functions
 function! TemplateReplace()
