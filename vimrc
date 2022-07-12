@@ -58,6 +58,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Meson
 Plug 'igankevich/mesonic'
+" Bitbake support
+Plug 'kergoth/vim-bitbake'
 call plug#end()
 " vim-plug }}}
 
