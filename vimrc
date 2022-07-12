@@ -238,6 +238,8 @@ set laststatus=2
 " First look for 'tags' file in current directory,
 set tags=./tags,tags
 
+" Column
+set colorcolumn=80
 
 " Truncate the line at the start
 set statusline=%<
