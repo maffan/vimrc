@@ -134,6 +134,7 @@ augroup END
 " CtrlP
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_working_path_mode = "ra"
+let g:ctrlp_custom_ignore = 'venv'
 " let g:ctrlp_user_command = 'find %s -type f'
 
 " NERDtree
